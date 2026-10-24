@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Design tokens
+   A restrained neutral scale + one confident accent. Depth comes
+   from hairlines and low-spread shadows, not from colour washes.
+   --------------------------------------------------------------- */
+
+:root {
+  /* Surfaces */
+  --bg: #ffffff;
+  --bg-alt: #f7f8f9;
+  --bg-sunken: #f1f3f5;
+  --surface: #ffffff;
+
+  /* Ink */
+  --ink: #15181d;
+  --ink-soft: #2b3038;
+  --fg-muted: #5f6672;
+  --fg-faint: #9aa1ad;
+
+  /* Accent */
+  --primary: #2563eb;
+  --primary-deep: #1d4ed8;
+  --primary-hover: #1e49c4;
+  --primary-soft: #eef3ff;
+  --primary-ring: rgba(37, 99, 235, 0.32);
+
+  /* Support */
+  --orange: #c2740a;
+  --orange-soft: #fdf3e2;
+  --green: #15803d;
+  --green-soft: #eaf6ee;
+
+  /* Lines */
+  --border: #e6e8eb;
+  --border-strong: #d2d6dc;
+
+  /* On dark */
+  --on-dark: #ffffff;
+  --on-dark-muted: rgba(255, 255, 255, 0.62);
+  --dark-surface: #1b1f26;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(16, 20, 28, 0.05);
+  --shadow-md:
+    0 1px 2px rgba(16, 20, 28, 0.04), 0 4px 12px rgba(16, 20, 28, 0.06);
+  --shadow-lg:
+    0 2px 4px rgba(16, 20, 28, 0.04), 0 12px 32px rgba(16, 20, 28, 0.09);
+
+  /* Rhythm */
+  --radius: 10px;
+  --radius-lg: 14px;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--bg-alt);
+  --color-ink: var(--ink);
+  --color-primary: var(--primary);
+  --color-border: var(--border);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-jakarta);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header clearance for in-page anchors */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings set in the display face read better slightly tightened
+     and balanced across lines — this kills single-word orphans. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Numerals line up in stat rows, tables and the dashboard mocks. */
+  table,
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* One consistent, visible focus treatment across the whole site. */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--primary-soft);
+    color: var(--primary-deep);
+  }
+}
+
+/* ---------------------------------------------------------------
+   Scroll reveal
+   --------------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------
+   Components
+   --------------------------------------------------------------- */
+
+.pill-tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+/* Standard card chrome: hairline + whisper of elevation so cards
+   sit on the page rather than being drawn onto it. */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-hover {
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card-hover:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* The product mocks share one frame so they read as screenshots of
+   the same product rather than three unrelated widgets. */
+.mock-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.mock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-alt);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+}
+
+.accent-text {
+  color: var(--primary-deep);
+}
+
+/* Subtle grid backdrop used behind the hero. */
+.grid-backdrop {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    #000 10%,
+    transparent 75%
+  );
+}
+
+/* ---------------------------------------------------------------
+   Motion preferences
+   --------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .card-hover:hover {
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
